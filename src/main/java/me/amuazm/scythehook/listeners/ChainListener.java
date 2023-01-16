@@ -12,11 +12,14 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.util.RayTraceResult;
 import org.bukkit.util.Vector;
 
+import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Predicate;
 
 public class ChainListener implements Listener {
     ScytheHook plugin = ScytheHook.getPlugin(ScytheHook.class);
-    private boolean gamer_mode = true;
+    private boolean gamer_mode = false;
 
     @EventHandler
     public void onPlayerInteract(PlayerInteractEvent e) {
@@ -60,8 +63,7 @@ public class ChainListener implements Listener {
             } else {
                 eLoc = entity.getLocation();
             }
-            // zoom
-            // TODO: try a 3 moveset
+            // Pull the entities
             pullEntityToLocation(p, eLoc, 1);
 //            pullEntityToLocation(entity, pLoc, 0.5);
         } else {

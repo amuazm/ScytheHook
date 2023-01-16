@@ -4,6 +4,7 @@ import me.amuazm.scythehook.commands.HoeMobCommand;
 import me.amuazm.scythehook.commands.HoeWarCommand;
 import me.amuazm.scythehook.listeners.ChainListener;
 import me.amuazm.scythehook.listeners.HoeListener;
+import me.amuazm.scythehook.listeners.MultiClickListener;
 import me.amuazm.scythehook.listeners.ShieldListener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -15,6 +16,7 @@ public final class ScytheHook extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new HoeListener(), this);
         getServer().getPluginManager().registerEvents(new ChainListener(), this);
         getServer().getPluginManager().registerEvents(new ShieldListener(), this);
+        getServer().getPluginManager().registerEvents(new MultiClickListener(), this);
         getCommand("hoemob").setExecutor(new HoeMobCommand());
         getCommand("hoewar").setExecutor(new HoeWarCommand());
     }
