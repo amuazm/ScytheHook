@@ -40,38 +40,43 @@ public class ChainListener implements Listener {
         final Location pLoc = p.getEyeLocation();
         final Vector v = pLoc.getDirection();
         final Predicate<Entity> filter = entity -> (entity != p);
-        RayTraceResult r;
+        final RayTraceResult r;
         final Location eLoc;
         // gamer_mode false - hooks to entities
         // gamer_mode true - hooks to blocks
         if (!gamer_mode) {
+            // hook to entities
             // get ray
             r = p.getWorld().rayTraceEntities(pLoc, v, 50, 2, filter);
-            // check ray
             if (r == null || r.getHitEntity() == null) {
                 // no ray feedback
                 p.playSound(pLoc, Sound.ITEM_ARMOR_EQUIP_LEATHER, 1, 1);
                 return;
-            } else {
-                // get location to hook to
-                final Entity entity = r.getHitEntity();
-                if (entity instanceof LivingEntity livingEntity) {
-                    eLoc = livingEntity.getEyeLocation();
-                } else {
-                    eLoc = entity.getLocation();
-                }
             }
+            // get location to hook to
+            final Entity entity = r.getHitEntity();
+            if (entity instanceof LivingEntity livingEntity) {
+                eLoc = livingEntity.getEyeLocation();
+            } else {
+                eLoc = entity.getLocation();
+            }
+            // zoom
+            // TODO: try a 3 moveset
+            pullEntityToLocation(p, eLoc, 1);
+//            pullEntityToLocation(entity, pLoc, 0.5);
         } else {
+            // hook to blocks
             // get ray
             r = p.getWorld().rayTraceBlocks(pLoc, v, 50);
             if (r == null || r.getHitBlock() == null) {
                 // no ray feedback
                 p.playSound(pLoc, Sound.ITEM_ARMOR_EQUIP_LEATHER, 1, 1);
                 return;
-            } else {
-                // get location to hook to
-                eLoc = r.getHitBlock().getLocation();
             }
+            // get location to hook to
+            eLoc = r.getHitBlock().getLocation();
+            // zoom
+            pullEntityToLocation(p, eLoc, 1.0);
         }
 
         // Code to run
@@ -97,10 +102,6 @@ public class ChainListener implements Listener {
                     1,
                     dustOptions);
         }
-
-        // Zoom
-        pullEntityToLocation(p, eLoc, 1.0);
-//        pullEntityToLocation(entity, p.getLocation(), 1.0);
 
         // TODO: durability
     }
