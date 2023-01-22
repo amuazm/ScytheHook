@@ -38,9 +38,8 @@ public class StringListener implements Listener {
 
         final Location pLoc = p.getEyeLocation();
         final Vector v = pLoc.getDirection();
-        final Predicate<Entity> filter = entity -> (entity != p);
         final RayTraceResult r;
-        final Location eLoc;
+        final Location bLoc;
         // Hook to blocks
         // Get ray
         r = p.getWorld().rayTraceBlocks(pLoc, v, 100);
@@ -50,11 +49,12 @@ public class StringListener implements Listener {
             return;
         }
         // Get location to hook to
-        eLoc = r.getHitBlock().getLocation();
-        // Zoom
-        pullEntityToLocation(p, eLoc, 1.0);
+        bLoc = r.getHitBlock().getLocation();
+        bLoc.add(0.5, 0.5, 0.5);
 
-        // Code to run
+        // Zoom
+        pullEntityToLocation(p, bLoc, 1.0);
+
         // Sound
         p.playSound(pLoc, Sound.ENTITY_MAGMA_CUBE_JUMP, 1, 1);
 
@@ -63,10 +63,10 @@ public class StringListener implements Listener {
         double x = pLoc.getX();
         double y = pLoc.getY();
         double z = pLoc.getZ();
-        double distance = pLoc.distance(eLoc);
-        double x_interval = (eLoc.getX() - x) / distance;
-        double y_interval = (eLoc.getY() - y) / distance;
-        double z_interval = (eLoc.getZ() - z) / distance;
+        double distance = pLoc.distance(bLoc);
+        double x_interval = (bLoc.getX() - x) / distance;
+        double y_interval = (bLoc.getY() - y) / distance;
+        double z_interval = (bLoc.getZ() - z) / distance;
         double particles_per_block = 2;
         for (double i = 0; i <= distance; i += (1 / particles_per_block)) {
             p.spawnParticle(
