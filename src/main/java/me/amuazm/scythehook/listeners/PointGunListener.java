@@ -4,7 +4,6 @@ import me.amuazm.scythehook.Point;
 import me.amuazm.scythehook.ScytheHook;
 import org.bukkit.*;
 import org.bukkit.block.Block;
-import org.bukkit.block.BlockFace;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -97,6 +96,21 @@ public class PointGunListener implements Listener {
                         point.getCurrent().add(0, gravity, 0);
 
                         // Block collision detection
+                        // point = new Point(
+                        //         new Location(
+                        //                 pWorld,
+                        //                 794.54,
+                        //                 9.89,
+                        //                 974.85
+                        //
+                        //         ),
+                        //         new Location(
+                        //                 pWorld,
+                        //                 794.66,
+                        //                 10.01,
+                        //                 974.72
+                        //         )
+                        // );
                         RayTraceResult r2 = pWorld.rayTraceBlocks(point.getOld(), point.getVector(), point.getVector().length());
                         if (r2 != null && r2.getHitBlock() != null && r2.getHitBlockFace() != null) {
                             Block b = r2.getHitBlock();
@@ -108,8 +122,10 @@ public class PointGunListener implements Listener {
 
                             switch (r2.getHitBlockFace()) {
                                 case UP -> {
+                                    // Reflects a point (point.getCurrentY()) across a threshold (bb.getMaxY())
                                     point.setCurrentY(point.getCurrentY() + 2 * (bb.getMaxY() - point.getCurrentY()));
                                     point.setOldY(point.getCurrentY() + vy * bounce);
+                                    // point.setOldY(point.getOldY() + (bb.getMaxY() - point.getOldY()) + 0.9 * (bb.getMaxY() - point.getOldY()));
                                 }
                                 case DOWN -> {
                                     point.setCurrentY(point.getCurrentY() + 2 * (bb.getMinY() - point.getCurrentY()));
